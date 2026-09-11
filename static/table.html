@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airports — Table</title>
+  <meta name="description" content="Explore airport locations, current local times, and weekend status.">
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<header class="navbar">
+  <a href="/table" class="nav-brand"><span class="brand-icon" aria-hidden="true">✈</span><span class="brand-title">Airports</span></a>
+  <nav class="nav-views" aria-label="Views">
+    <a href="/table" class="nav-link active" aria-current="page">Table</a>
+    <a href="/globe" class="nav-link ">3D Globe</a>
+  </nav>
+  <div class="nav-controls"><span id="updatedText">Loading airports…</span><button id="refreshBtn" type="button">Refresh</button></div>
+</header>
+<div id="errorBanner" class="banner" role="alert" hidden><span id="errorMessage"></span><button id="errorRetryBtn" type="button">Retry</button></div>
+<main class="main-content">
+  <section class="card" aria-labelledby="tableTitle">
+    <div class="card-header"><h1 id="tableTitle">Airport local times</h1>
+      <label class="search-box">Search airports
+        <input type="search" id="searchInput" placeholder="Code, airport, city, country">
+      </label>
+    </div>
+    <div class="table-wrapper"><table class="data-table">
+      <thead><tr>
+        <th scope="col" aria-sort="ascending"><button data-sort="code">Code ↑</button></th>
+        <th scope="col" aria-sort="none"><button data-sort="city">Location / Airport</button></th>
+        <th scope="col">Local Date &amp; Time</th><th scope="col">Time Zone</th><th scope="col">Weekend / Weekday</th>
+      </tr></thead>
+      <tbody id="airportTableBody"><tr><td colspan="5" class="empty-state">Loading airports…</td></tr></tbody>
+    </table></div>
+    <p id="airportCount" class="table-count" aria-live="polite"></p>
+  </section>
+</main>
+<footer class="app-footer">Times update every minute. Weekends are Saturday and Sunday at each airport.</footer>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/table.js"></script>
+</body>
+</html>

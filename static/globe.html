@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airports — 3D Globe</title>
+  <meta name="description" content="Explore airport locations, current local times, and weekend status.">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.119/Build/Cesium/Widgets/widgets.css">
+</head>
+<body class="globe-layout">
+<header class="navbar">
+  <a href="/table" class="nav-brand"><span class="brand-icon" aria-hidden="true">✈</span><span class="brand-title">Airports</span></a>
+  <nav class="nav-views" aria-label="Views">
+    <a href="/table" class="nav-link ">Table</a>
+    <a href="/globe" class="nav-link active" aria-current="page">3D Globe</a>
+  </nav>
+  <div class="nav-controls"><span id="updatedText">Loading airports…</span><button id="refreshBtn" type="button">Refresh</button></div>
+</header>
+<div id="errorBanner" class="banner" role="alert" hidden><span id="errorMessage"></span><button id="errorRetryBtn" type="button">Retry</button></div>
+<main id="cesiumContainer" aria-label="Interactive globe of airports"></main>
+<div id="globeError" class="globe-error" role="alert" hidden>Unable to load the globe. Check your connection and WebGL support, then reload. <a href="/table">View airport times in the table</a>.</div>
+<div class="globe-controls" aria-label="Globe controls">
+  <button class="globe-btn" id="btnViewGlobal">Global View</button>
+  <button class="globe-btn" id="btnViewAmericas">Americas</button>
+  <button class="globe-btn" id="btnViewNorthAmerica">North America</button>
+  <button class="globe-btn" id="btnViewSouthAmerica">South America</button>
+  <button class="globe-btn" id="btnViewEurope">Europe</button>
+  <button class="globe-btn" id="btnViewAPAC">Asia-Pacific</button>
+  <button class="globe-btn" id="btnKioskMode" aria-pressed="false">▶ Kiosk Mode</button>
+</div>
+<aside id="airportDrawer" class="airport-popup-drawer" aria-label="Airport details" hidden>
+  <div class="popup-header"><div><span class="airport-code-badge" id="drawerCode"></span><h1 id="drawerCity"></h1><p id="drawerAirport"></p></div>
+    <button id="drawerCloseBtn" aria-label="Close airport details">✕</button></div>
+  <dl><dt>Local Date &amp; Time</dt><dd id="drawerLocalTime"></dd><dt>Time Zone</dt><dd id="drawerTimezone"></dd><dt>Weekend / Weekday</dt><dd id="drawerWeekend"></dd></dl>
+  <button id="drawerZoomBtn" class="globe-btn">Zoom to Airport</button>
+</aside>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.119/Build/Cesium/Cesium.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/globe.js"></script>
+</body>
+</html>
