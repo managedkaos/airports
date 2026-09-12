@@ -14,7 +14,9 @@
     <a href="/table" class="nav-link active" aria-current="page">Table</a>
     <a href="/globe" class="nav-link ">3D Globe</a>
   </nav>
-  <div class="nav-controls"><span id="updatedText">Loading airports…</span><button id="refreshBtn" type="button">Refresh</button></div>
+  <div class="nav-controls"><span id="updatedText">Loading airports…</span><button id="refreshBtn" type="button">Refresh</button>
+    <span class="nav-profile" id="navProfile" hidden><span class="nav-avatar" id="navAvatar" aria-hidden="true"></span><span class="nav-username" id="navUsername"></span><button id="signOutBtn" class="nav-signout" type="button">Sign out</button></span>
+  </div>
 </header>
 <div id="errorBanner" class="banner" role="alert" hidden><span id="errorMessage"></span><button id="errorRetryBtn" type="button">Retry</button></div>
 <main class="main-content">
@@ -37,6 +39,7 @@
 </main>
 <footer class="app-footer">Times update every minute. Weekends are Saturday and Sunday at each airport.</footer>
 <script src="/static/js/common.js"></script>
+<script src="/static/js/session.js"></script>
 <script src="/static/js/table.js"></script>
 </body>
 </html>

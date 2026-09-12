@@ -8,6 +8,7 @@ IMAGE_NAME ?= airports                ## Docker image name
 IMAGE_TAG  ?= latest                  ## Docker image tag
 PORT       ?= 8181                    ## Server port
 KIOSK_DWELL_SECONDS ?= 2              ## Seconds between kiosk rotations
+AUTH_ENABLED ?= false                 ## Require Google sign-in (set true with Firebase env vars configured)
 
 .PHONY: help run test lint format build docker-run
 
@@ -27,7 +28,7 @@ help: ## Display available targets
 	}' $(MAKEFILE_LIST)
 
 run: ## Start the dev server with hot reload
-	KIOSK_DWELL_SECONDS=$(strip $(KIOSK_DWELL_SECONDS)) $(UVICORN) app.main:app --host 0.0.0.0 --port $(strip $(PORT)) --reload
+	AUTH_ENABLED=$(strip $(AUTH_ENABLED)) KIOSK_DWELL_SECONDS=$(strip $(KIOSK_DWELL_SECONDS)) $(UVICORN) app.main:app --host 0.0.0.0 --port $(strip $(PORT)) --reload
 
 test: ## Run the test suite
 	$(PYTEST) --verbose test_*.py

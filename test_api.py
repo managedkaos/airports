@@ -6,9 +6,22 @@ from unittest.mock import patch
 import pytest
 from httpx2 import ASGITransport, AsyncClient
 
+import app.auth.dependencies as auth_deps
+import app.main as main_module
 from app.airports import AIRPORTS
 from app.config import settings
 from app.main import app
+
+
+@pytest.fixture(autouse=True)
+def _auth_disabled():
+    """Run the core API/page tests with auth disabled, preserving the app's
+    original open behavior. Individual auth enforcement is covered separately."""
+    disabled = replace(settings, AUTH_ENABLED=False)
+    auth_deps.reset_provider()
+    with patch.object(main_module, "settings", disabled), patch.object(auth_deps, "settings", disabled):
+        yield
+    auth_deps.reset_provider()
 
 
 @asynccontextmanager
@@ -72,7 +85,7 @@ async def test_pages_and_retired_routes():
 
 @pytest.mark.parametrize("dwell_seconds", [60, 10, 2.5])
 async def test_client_configuration(dwell_seconds):
-    with patch("app.main.settings", replace(settings, KIOSK_DWELL_SECONDS=dwell_seconds)):
+    with patch("app.main.settings", replace(settings, AUTH_ENABLED=False, KIOSK_DWELL_SECONDS=dwell_seconds)):
         async with api_client() as client:
             assert (await client.get("/api/config")).json() == {
                 "refresh_interval_seconds": 60,

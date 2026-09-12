@@ -20,6 +20,26 @@ over the internet.
   or Sunday at the airport, not the browser or server location; holidays and
   country-specific working calendars are not modeled.
 
+## Authentication
+
+The app can gate the entire experience behind Google sign-in. When
+`AUTH_ENABLED=true`, unauthenticated visitors only see the `/login` page; the
+table, globe, and all `/api/*` data endpoints require a valid session.
+
+Sign-in runs in the browser with the Firebase JS SDK. The backend verifies the
+resulting Google ID token with the Firebase Admin SDK and issues an HTTP-only,
+Secure, SameSite session cookie; `/auth/logout` clears it and revokes the
+refresh token. The auth backend is pluggable via `AUTH_PROVIDER`, so Firebase
+can be swapped for another Google-compatible provider without changing routes.
+
+Authentication is **disabled by default for local development** (`make run`),
+so no Firebase project is needed to run and test the app. To enable real Google
+sign-in, follow [`docs/AUTH_SETUP.md`](docs/AUTH_SETUP.md), which covers creating
+the Firebase project, enabling the Google provider (which provisions the Google
+OAuth client ID), obtaining the browser config, and generating the service
+account key. Credentials are supplied as environment variables or a mounted
+secret file and are never committed or baked into the container image.
+
 ## Run locally
 
 Requires Python 3.12+ and `uv` (or `pip`). From the project directory:
@@ -87,9 +107,17 @@ a portable fallback on systems without an OS time-zone database.
 |---------|---------|---------|
 | `KIOSK_DWELL_SECONDS` | `60` | Pause after each kiosk camera flight, in seconds |
 | `CESIUM_ION_TOKEN` | empty | Optional browser-visible Cesium token; OSM imagery needs no token |
+| `AUTH_ENABLED` | `true` | Gate the whole app behind Google sign-in (`make run` defaults it to `false`) |
+| `AUTH_PROVIDER` | `firebase` | Selects the pluggable auth backend |
+| `FIREBASE_API_KEY` / `FIREBASE_AUTH_DOMAIN` / `FIREBASE_PROJECT_ID` | empty | Browser-visible Firebase web config (non-secret) |
+| `GOOGLE_APPLICATION_CREDENTIALS` / `FIREBASE_SERVICE_ACCOUNT_JSON` | empty | Server service-account credential (file path or inline JSON) |
+| `SESSION_COOKIE_NAME` / `SESSION_EXPIRES_DAYS` / `SESSION_COOKIE_SECURE` | `session` / `5` / `true` | Session cookie policy |
 | Makefile `PORT` | `8181` | Local server port or published container port |
 | Makefile `VENV` | `~/Envs/airports` | Python environment containing application and development dependencies |
 | Makefile `IMAGE_NAME` / `IMAGE_TAG` | `airports` / `latest` | Container image name and tag |
+
+See [`docs/AUTH_SETUP.md`](docs/AUTH_SETUP.md) for the full authentication
+configuration reference and setup steps.
 
 ```bash
 make run PORT=8080 KIOSK_DWELL_SECONDS=10
@@ -132,7 +160,15 @@ selects that stage and requires access to the internal registry.
 - `GET /api/config`: refresh interval and kiosk dwell time.
 - `GET /api/cesium-token`: optional browser-visible Cesium token.
 - `GET /table`, `GET /globe`: application views.
+- `GET /login`: login landing page (public). `GET /api/auth-config`: browser-visible
+  auth config (public). `POST /auth/session`: exchange a Firebase ID token for a
+  session cookie. `POST /auth/logout`: clear the session and revoke refresh tokens.
+  `GET /api/me`: the signed-in user's profile.
 - `GET /docs`: interactive API documentation.
+
+When `AUTH_ENABLED=true`, every route except the public ones above requires a
+valid session; unauthenticated page requests redirect to `/login` and `/api/*`
+requests return `401`.
 
 The former `/api/labels` and `/api/legend` endpoints have been removed.
 There is no upstream connection, prediction model, or server-side data cache.

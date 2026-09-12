@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Firebase / Google service account credentials (never commit)
+service-account*.json
+*firebase-adminsdk*.json
+*-service-account.json

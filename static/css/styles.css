@@ -47,6 +47,23 @@ h1 { font-size: 1.2rem; margin: 0; }
 dt { color: var(--muted); font-size: .75rem; margin-top: .75rem; }
 dd { margin: .2rem 0; overflow-wrap: anywhere; }
 .globe-error { position: absolute; top: 45%; left: 20%; right: 20%; padding: 1rem; background: var(--surface); z-index: 40; }
+
+/* Login / authentication */
+.auth-main { display: flex; justify-content: center; align-items: center; min-height: calc(100dvh - 140px); }
+.auth-card { width: 100%; max-width: 420px; }
+.auth-body { padding: 2rem; text-align: center; }
+.auth-body h1 { font-size: 1.4rem; margin-bottom: .75rem; }
+.auth-subtitle { color: var(--muted); font-size: .9rem; margin: 0 0 1.75rem; }
+.google-signin-btn { display: inline-flex; align-items: center; gap: .6rem; font-weight: 600; padding: .6rem 1.25rem; }
+.google-mark { display: inline-flex; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: white; color: #1a73e8; font-weight: 700; }
+.auth-status { color: var(--muted); font-size: .8rem; min-height: 1.2em; margin: 1rem 0 0; }
+.auth-error { color: #fecaca; background: #451a1a; border-radius: 7px; padding: .6rem .8rem; font-size: .85rem; margin: 1rem 0 0; }
+
+/* Logged-in navbar profile */
+.nav-profile { display: flex; align-items: center; gap: .5rem; }
+.nav-avatar { width: 1.9rem; height: 1.9rem; border-radius: 50%; background: #1e293b; border: 1px solid var(--border); object-fit: cover; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem; color: var(--accent); }
+.nav-username { color: #f8fafc; font-size: .8rem; max-width: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-signout { font-size: .75rem; }
 @media (max-width: 768px) {
   .navbar { padding: .5rem .75rem; gap: .5rem; }
   .nav-controls { width: 100%; justify-content: space-between; }

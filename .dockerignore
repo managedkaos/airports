@@ -5,3 +5,8 @@ __pycache__
 *.pyc
 .pytest_cache
 .ruff_cache
+
+# Firebase / Google service account credentials (never copy into the image)
+service-account*.json
+*firebase-adminsdk*.json
+*-service-account.json
